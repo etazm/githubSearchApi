@@ -1,51 +1,33 @@
-version: '3'
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: github-filter
+    container_name: githubFilter-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - githubFilter
+
+  nginx:
+    image: nginx:alpine
+    container_name: githubFilter-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - githubFilter
 
 networks:
-    laravel:
-
-services:
-    php:
-        build:
-            context: .
-            dockerfile: php.dockerfile
-            args:
-                - PHPUSER=${PHPUSER:-www-data}
-                - PHPGROUP=${PHPGROUP:-www-data}
-        container_name: php
-        volumes:
-            - ./:/var/www/html:delegated
-        networks:
-            - laravel
-
-    composer:
-        build:
-            context: .
-            dockerfile: composer.dockerfile
-            args:
-                - PHPUSER=${PHPUSER:-www-data}
-                - PHPGROUP=${PHPGROUP:-www-data}
-        container_name: composer
-        volumes:
-            - ./:/var/www/html
-        working_dir: /var/www/html
-        depends_on:
-            - php
-        user: ${PHPUSER:-www-data}
-        entrypoint: [ 'composer', '--ignore-platform-reqs' ]
-        networks:
-            - laravel
-
-    artisan:
-        build:
-            context: .
-            dockerfile: php.dockerfile
-            args:
-                - PHPUSER=${PHPUSER:-www-data}
-                - PHPGROUP=${PHPGROUP:-www-data}
-        container_name: artisan
-        volumes:
-            - ./:/var/www/html:delegated
-        working_dir: /var/www/html
-        entrypoint: [ 'php', '/var/www/html/artisan' ]
-        networks:
-            - laravel
+  githubFilter:
+    driver: bridge

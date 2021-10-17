@@ -47,11 +47,12 @@ To install with [Docker](https://www.docker.com), run following commands:
 git clone https://github.com/etazm/githubSearchApi.git
 cd githubSearchApi
 cp .env.example.docker .env
-docker run -v $(pwd):/app composer install
-cd ./docker
+
+docker-compose build app
 docker-compose up -d
-docker-compose exec php php artisan key:generate
-docker-compose exec php php artisan serve --host=0.0.0.0
+
+docker-compose exec app composer install
+docker-compose exec app php artisan key:generate
 ```
 
 
