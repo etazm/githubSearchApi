@@ -14,10 +14,6 @@ Alternative installation is possible without local dependencies relying on [Dock
 
 Clone the repository
 
-    git clone git@github.com:etazm/githubSearchApi.git
-
-    or
-
     git clone https://github.com/etazm/githubSearchApi.git
 
 Switch to the repo folder
@@ -48,8 +44,8 @@ You can now access the server at http://localhost:8000
 To install with [Docker](https://www.docker.com), run following commands:
 
 ```
-git clone git@github.com:gothinkster/laravel-realworld-example-app.git
-cd laravel-realworld-example-app
+git clone https://github.com/etazm/githubSearchApi.git
+cd githubSearchApi
 cp .env.example.docker .env
 docker run -v $(pwd):/app composer install
 cd ./docker
